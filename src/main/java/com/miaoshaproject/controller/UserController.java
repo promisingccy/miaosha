@@ -1,11 +1,13 @@
 package com.miaoshaproject.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.miaoshaproject.controller.viewobject.UserVO;
 import com.miaoshaproject.error.BusinessException;
 import com.miaoshaproject.error.EmBusinessError;
 import com.miaoshaproject.response.CommonReturnType;
 import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,9 +33,40 @@ public class UserController extends BaseController {
     @Autowired
     private UserService userService;
 
-    //拿到session
+    //操作session
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    //用户注册接口
+    @RequestMapping(value = "/register", method = {RequestMethod.POST}, consumes = {HTTP_CONTENT_TYPE})
+    @ResponseBody
+    public CommonReturnType register(
+            @RequestParam(name="name")String name,
+            @RequestParam(name="password")String password,
+            @RequestParam(name="gender")Byte gender,
+            @RequestParam(name="age")Integer age,
+            @RequestParam(name="telphone")String telphone,
+            @RequestParam(name="otpCode")String otpCode
+    ) throws BusinessException {
+        //验证手机号对应的optCode
+        String inSessionOtpCode = (String) httpServletRequest.getSession().getAttribute(telphone);
+        if(!StringUtils.equals(inSessionOtpCode, otpCode)){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "短信验证码不正确");
+        }
+        //用户注册
+        UserModel userModel = new UserModel();
+        userModel.setName(name);
+        userModel.setGender(gender);
+        userModel.setAge(age);
+        userModel.setTelphone(telphone);
+        userModel.setRegisterMode("byphone");
+        //密码md5加密
+        System.out.println(MD5Encoder.encode(password.getBytes()));
+        userModel.setEncrptPassword(MD5Encoder.encode(password.getBytes()));
+        //执行注册
+        userService.register(userModel);
+        return CommonReturnType.create(null);
+    }
 
     //获取短信验证码接口
     @RequestMapping(value = "/getotp", method = {RequestMethod.POST}, consumes = {HTTP_CONTENT_TYPE})

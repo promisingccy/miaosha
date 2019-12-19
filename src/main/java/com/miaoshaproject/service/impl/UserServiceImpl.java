@@ -4,11 +4,15 @@ import com.miaoshaproject.dao.UserDOMapper;
 import com.miaoshaproject.dao.UserPasswordDOMapper;
 import com.miaoshaproject.dataobject.UserDO;
 import com.miaoshaproject.dataobject.UserPasswordDO;
+import com.miaoshaproject.error.BusinessException;
+import com.miaoshaproject.error.EmBusinessError;
 import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @ClassName UserServiceImpl
@@ -35,6 +39,50 @@ public class UserServiceImpl implements UserService {
         return convertFromDataObject(userDO, userPasswordDO);
     }
 
+    @Override
+    @Transactional //启动事务模式
+    public void register(UserModel userModel) throws BusinessException {
+        if(userModel == null){//判空操作
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+        if(StringUtils.isEmpty(userModel.getName())
+                || userModel.getAge() == null
+                || userModel.getGender() == null
+                || StringUtils.isEmpty(userModel.getTelphone())){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "参数不合法");
+        }
+
+        //model->dataobject->DOMapper
+        UserDO userDO = convertFromModel(userModel);
+        //insertSelective 只传需要的字段
+        userDOMapper.insertSelective(userDO);
+        //model->dataobject->DOMapper
+        UserPasswordDO userPasswordDO = convertPasswordFromModel(userModel);
+        userPasswordDOMapper.insertSelective(userPasswordDO);
+        return;
+    }
+
+    //将用户model转为DO
+    private UserDO convertFromModel(UserModel userModel){
+        if (userModel == null) {
+            return null;
+        }
+        UserDO userDO = new UserDO();
+        BeanUtils.copyProperties(userModel, userDO);
+        return userDO;
+    }
+
+    //将用户model转为DO
+    private UserPasswordDO convertPasswordFromModel(UserModel userModel){
+        if (userModel == null) {
+            return null;
+        }
+        UserPasswordDO userPasswordDO = new UserPasswordDO();
+        BeanUtils.copyProperties(userModel, userPasswordDO);
+        return userPasswordDO;
+    }
+
+    //将密码信息携带进用户信息
     private UserModel convertFromDataObject(UserDO userDO, UserPasswordDO userPasswordDO){
         if(userDO == null){
             return null;
