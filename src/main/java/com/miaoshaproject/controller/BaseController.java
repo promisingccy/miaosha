@@ -21,6 +21,9 @@ import java.util.Map;
  **/
 public class BaseController {
 
+    public final static String HTTP_CONTENT_TYPE = "application/x-www-form-urlencoded";
+
+
     //定义 exceptionHandler 解决未被controller层吸收的 exception
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.OK)
