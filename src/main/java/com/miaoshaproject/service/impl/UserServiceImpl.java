@@ -11,6 +11,7 @@ import com.miaoshaproject.service.model.UserModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,8 +55,17 @@ public class UserServiceImpl implements UserService {
 
         //model->dataobject->DOMapper
         UserDO userDO = convertFromModel(userModel);
-        //insertSelective 只传需要的字段
-        userDOMapper.insertSelective(userDO);
+        //判断是否手机号重复
+        try{
+            //insertSelective 只传需要的字段
+            //改写mapper.xml中insert的属性 keyProperty="id" useGeneratedKeys="true"
+            //然后将插入的记录的id属性获取到 再传给password表
+            userDOMapper.insertSelective(userDO);
+        } catch (DuplicateKeyException ex){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "手机号已存在");
+        }
+        //将userid给password表
+        userModel.setId(userDO.getId());
         //model->dataobject->DOMapper
         UserPasswordDO userPasswordDO = convertPasswordFromModel(userModel);
         userPasswordDOMapper.insertSelective(userPasswordDO);

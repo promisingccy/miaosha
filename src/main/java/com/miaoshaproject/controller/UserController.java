@@ -12,8 +12,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 
@@ -47,7 +51,7 @@ public class UserController extends BaseController {
             @RequestParam(name="age")Integer age,
             @RequestParam(name="telphone")String telphone,
             @RequestParam(name="otpCode")String otpCode
-    ) throws BusinessException {
+    ) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         //验证手机号对应的optCode
         String inSessionOtpCode = (String) httpServletRequest.getSession().getAttribute(telphone);
         if(!StringUtils.equals(inSessionOtpCode, otpCode)){
@@ -56,16 +60,22 @@ public class UserController extends BaseController {
         //用户注册
         UserModel userModel = new UserModel();
         userModel.setName(name);
-        userModel.setGender(gender);
+        userModel.setGender(new Byte(String.valueOf(gender.intValue())));
         userModel.setAge(age);
         userModel.setTelphone(telphone);
         userModel.setRegisterMode("byphone");
         //密码md5加密
-        System.out.println(MD5Encoder.encode(password.getBytes()));
-        userModel.setEncrptPassword(MD5Encoder.encode(password.getBytes()));
+        userModel.setEncrptPassword(this.EncodeByMd5(password));
         //执行注册
         userService.register(userModel);
         return CommonReturnType.create(null);
+    }
+
+    public String EncodeByMd5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        BASE64Encoder base64Encoder = new BASE64Encoder();
+        String newstr = base64Encoder.encode(md5.digest(str.getBytes("utf-8")));
+        return newstr;
     }
 
     //获取短信验证码接口
