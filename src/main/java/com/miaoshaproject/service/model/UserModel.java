@@ -17,6 +17,7 @@ public class UserModel {
     private String thirdPartyId;
 
     private String encrptPassword;
+    private Integer userId;
 
     public Integer getId() {
         return id;
@@ -80,5 +81,13 @@ public class UserModel {
 
     public void setEncrptPassword(String encrptPassword) {
         this.encrptPassword = encrptPassword;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

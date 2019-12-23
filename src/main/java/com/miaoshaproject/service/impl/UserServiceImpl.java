@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "手机号已存在");
         }
         //将userid给password表
-        userModel.setId(userDO.getId());
+        userModel.setUserId(userDO.getId());
         //model->dataobject->DOMapper
         UserPasswordDO userPasswordDO = convertPasswordFromModel(userModel);
         userPasswordDOMapper.insertSelective(userPasswordDO);
