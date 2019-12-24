@@ -80,14 +80,15 @@
             //校验规则
             if(telphone == null || telphone == ""){
                 alert("手机号不能为空");
+                return false;
             }
             if(password == null || password == ""){
                 alert("密码不能为空");
-                // return false;
+                return false;
             }
             if(age == null || age == ""){
                 alert("年龄不能为空");
-                // return false;
+                return false;
             }
             if(gender == null || gender == ""){
                 alert("性别不能为空");
@@ -95,7 +96,7 @@
             }
             if(name == null || name == ""){
                 alert("姓名不能为空");
-                // return false;
+                return false;
             }
 
             $.ajax({

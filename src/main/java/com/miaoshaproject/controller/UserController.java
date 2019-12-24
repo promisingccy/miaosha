@@ -77,7 +77,7 @@ public class UserController extends BaseController {
         //用户注册
         UserModel userModel = new UserModel();
         userModel.setName(name);
-        userModel.setGender(new Byte(String.valueOf(gender.intValue())));
+        userModel.setGender(gender);
         userModel.setAge(age);
         userModel.setTelphone(telphone);
         userModel.setRegisterMode("byphone");
