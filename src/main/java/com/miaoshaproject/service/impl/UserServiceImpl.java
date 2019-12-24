@@ -104,7 +104,8 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         UserPasswordDO userPasswordDO = new UserPasswordDO();
-        BeanUtils.copyProperties(userModel, userPasswordDO);
+        userPasswordDO.setEncrptPassword(userModel.getEncrptPassword());
+        userPasswordDO.setUserId(userModel.getUserId());
         return userPasswordDO;
     }
 
