@@ -141,7 +141,7 @@
             <!--移动生成文件（不建议生产环境开启）-->
             <verbose>true</verbose>
             <!--覆写生成文件（不建议生产环境开启）-->
-            <overwrite>true</overwrite>
+            <overwrite>false</overwrite>
             <configurationFile>
               src/main/resources/mybatis-generator.xml
             </configurationFile>
