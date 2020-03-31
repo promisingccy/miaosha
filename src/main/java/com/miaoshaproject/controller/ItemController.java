@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName ItemController
@@ -27,6 +29,30 @@ public class ItemController extends BaseController {
 
     @Autowired
     private ItemService itemService;
+
+    //获取单个商品详情
+    @RequestMapping(value = "/get", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType getItem(
+            @RequestParam(name = "id")Integer id
+    ){
+        ItemModel itemModel = itemService.getItemById(id);
+        ItemVO itemVO = this.convertItemVOFromItemModel(itemModel);
+        return CommonReturnType.create(itemVO);
+    }
+
+    //获取商品列表
+    @RequestMapping(value = "/list", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType listItem(){
+        List<ItemModel> itemModelList = itemService.listItem();
+        //将 itemModel 转 itemVO
+        List<ItemVO> itemVOList = itemModelList.stream().map(itemModel -> {
+            ItemVO itemVO = this.convertItemVOFromItemModel(itemModel);
+            return itemVO;
+        }).collect(Collectors.toList());
+        return CommonReturnType.create(itemVOList);
+    }
 
     //创建商品
     @RequestMapping(value = "/create", method = {RequestMethod.POST}, consumes = {HTTP_CONTENT_TYPE})

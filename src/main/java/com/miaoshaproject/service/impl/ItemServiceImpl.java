@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName ItemServiceImpl
@@ -65,7 +66,16 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemModel> listItem() {
-        return null;
+        //获取商品列表
+        List<ItemDO> itemDOList = itemDOMapper.listItem();
+        //相当于php的闭包函数 对list每一个元素进行相同处理
+        List<ItemModel> itemModelList = itemDOList.stream().map(itemDO -> {
+            //获取商品库存
+            ItemStockDO itemStockDO = itemStockDOMapper.selectByItemId(itemDO.getId());
+            //将商品和库存结合返回
+            return this.convertItemModelFromDataObject(itemDO, itemStockDO);
+        }).collect(Collectors.toList());
+        return itemModelList;
     }
 
     @Override
