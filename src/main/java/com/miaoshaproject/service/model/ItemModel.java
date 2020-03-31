@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @Version 1.0
  **/
 public class ItemModel {
-    //id title price stock desc sales imgUrl
+    //id title price stock description sales imgUrl
     private Integer id;
     @NotBlank(message="商品名称不能为空")
     private String title;
@@ -24,7 +24,7 @@ public class ItemModel {
     @NotNull(message = "商品库存不能为空")
     private Integer stock;
     @NotNull(message = "商品描述信息不能为空")
-    private String desc;
+    private String description;
 
     //销量是通过其他方式获取 非入参
     private Integer sales;
@@ -38,6 +38,14 @@ public class ItemModel {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getTitle() {
@@ -64,13 +72,6 @@ public class ItemModel {
         this.stock = stock;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
 
     public Integer getSales() {
         return sales;

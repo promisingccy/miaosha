@@ -33,7 +33,7 @@ public class ItemController extends BaseController {
     @ResponseBody
     public CommonReturnType createItem(
         @RequestParam(name = "title")String title,
-        @RequestParam(name = "desc")String desc,
+        @RequestParam(name = "description")String description,
         @RequestParam(name = "price") BigDecimal price,
         @RequestParam(name = "stock")Integer stock,
         @RequestParam(name = "imgUrl")String imgUrl
@@ -41,7 +41,7 @@ public class ItemController extends BaseController {
         //封装请求 创建商品
         ItemModel itemModel = new ItemModel();
         itemModel.setTitle(title);
-        itemModel.setDesc(desc);
+        itemModel.setDescription(description);
         itemModel.setPrice(price);
         itemModel.setStock(stock);
         itemModel.setImgUrl(imgUrl);
@@ -49,11 +49,11 @@ public class ItemController extends BaseController {
         //写入数据库 返回成功的对象
         ItemModel itemModelForReturn = itemService.createItem(itemModel);
         //将对象转换为 VO
-        ItemVO itemVO = this.convertItemVOFromItemModle(itemModelForReturn);
+        ItemVO itemVO = this.convertItemVOFromItemModel(itemModelForReturn);
         return CommonReturnType.create(itemVO);
     }
 
-    private ItemVO convertItemVOFromItemModle(ItemModel itemModel){
+    private ItemVO convertItemVOFromItemModel(ItemModel itemModel){
         if(itemModel == null){
             return null;
         }

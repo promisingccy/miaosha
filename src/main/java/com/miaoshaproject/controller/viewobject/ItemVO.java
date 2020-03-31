@@ -18,10 +18,18 @@ public class ItemVO {
     //商业计算 - java.math.BigDecimal类来进行精确计算
     private BigDecimal price;
     private Integer stock;
-    private String desc;
+    private String description;
     //销量是通过其他方式获取 非入参
     private Integer sales;
     private String imgUrl;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Integer getId() {
         return id;
@@ -53,14 +61,6 @@ public class ItemVO {
 
     public void setStock(Integer stock) {
         this.stock = stock;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
     }
 
     public Integer getSales() {

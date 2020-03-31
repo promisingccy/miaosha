@@ -50,7 +50,7 @@ CREATE TABLE `item` (
   `title` VARCHAR(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '商品名称',
   `price` DOUBLE NOT NULL DEFAULT 0 COMMENT '商品价格',
   `sales` INT(11) NOT NULL DEFAULT 0 COMMENT '商品销量',
-  `desc` VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '商品描述',
+  `description` VARCHAR(500) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '商品描述',
   `img_url` VARCHAR(128) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '商品图片url',
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
