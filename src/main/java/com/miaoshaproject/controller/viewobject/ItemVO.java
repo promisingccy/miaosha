@@ -1,35 +1,26 @@
-package com.miaoshaproject.service.model;
+package com.miaoshaproject.controller.viewobject;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
- * @ClassName ItemModel
+ * @ClassName ItemVO
  * @Description //TODO
  * @Author ccy
- * @Date 2020/2/26 13:58
+ * @Date 2020/3/31 17:23
  * @Version 1.0
  **/
-public class ItemModel {
+public class ItemVO {
+    //需要确认 ItemModel 的字段是否都可以对前端展示
+
     //id title price stock desc sales imgUrl
     private Integer id;
-    @NotBlank(message="商品名称不能为空")
     private String title;
     //商业计算 - java.math.BigDecimal类来进行精确计算
-    @NotNull(message = "商品价格不能为空")
-    @Min(value = 0, message = "商品价格必须大于0")
     private BigDecimal price;
-    @NotNull(message = "商品库存不能为空")
     private Integer stock;
-    @NotNull(message = "商品描述信息不能为空")
     private String desc;
-
     //销量是通过其他方式获取 非入参
     private Integer sales;
-
-    @NotNull(message = "商品图片信息不能为空")
     private String imgUrl;
 
     public Integer getId() {
