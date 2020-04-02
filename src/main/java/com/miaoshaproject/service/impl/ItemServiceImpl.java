@@ -91,6 +91,23 @@ public class ItemServiceImpl implements ItemService {
         return this.convertItemModelFromDataObject(itemDO, itemStockDO);
     }
 
+    @Override
+    @Transactional
+    public boolean decreaseStock(Integer itemId, Integer amount) throws BusinessException {
+        int affectedRow = itemStockDOMapper.decreaseStock(itemId, amount);
+        if(affectedRow > 0){//更新成功
+            return true;
+        }
+        return false;
+    }
+
+    //增加销量
+    @Override
+    @Transactional
+    public void increaseSales(Integer itemId, Integer amount) throws BusinessException {
+        itemDOMapper.increaseSales(itemId, amount);
+    }
+
     //============= 辅助方法
     //将 DataObject 转换为 model 返回前端
     private ItemModel convertItemModelFromDataObject(ItemDO itemDO, ItemStockDO itemStockDO){
