@@ -32,6 +32,17 @@ public class ItemModel {
     @NotNull(message = "商品图片信息不能为空")
     private String imgUrl;
 
+    //使用聚合模型 将活动信息聚合为商品模块的一个属性里
+    private PromoModel promoModel;
+
+    public PromoModel getPromoModel() {
+        return promoModel;
+    }
+
+    public void setPromoModel(PromoModel promoModel) {
+        this.promoModel = promoModel;
+    }
+
     public Integer getId() {
         return id;
     }

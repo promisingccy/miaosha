@@ -8,7 +8,7 @@
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <!--数据库链接地址账号密码-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://10.0.86.175:3306/miaosha"
+                        connectionURL="jdbc:mysql://10.0.86.197:3306/miaosha"
                         userId="root"
                         password="123456">
         </jdbcConnection>
@@ -41,9 +41,12 @@
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 
         <table tableName="order_info" domainObjectName="OrderDO" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 
         <table tableName="sequence_info" domainObjectName="SequenceDO" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+
+        <table tableName="promo" domainObjectName="PromoDO" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 
     </context>

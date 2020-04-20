@@ -7,7 +7,9 @@ import com.miaoshaproject.dataobject.ItemStockDO;
 import com.miaoshaproject.error.BusinessException;
 import com.miaoshaproject.error.EmBusinessError;
 import com.miaoshaproject.service.ItemService;
+import com.miaoshaproject.service.PromoService;
 import com.miaoshaproject.service.model.ItemModel;
+import com.miaoshaproject.service.model.PromoModel;
 import com.miaoshaproject.validator.ValidationResult;
 import com.miaoshaproject.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
@@ -35,7 +37,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemDOMapper itemDOMapper;
     @Autowired
     private ItemStockDOMapper itemStockDOMapper;
-
+    @Autowired
+    private PromoService promoService;
 
     @Override
     @Transactional //开启事务
@@ -88,7 +91,15 @@ public class ItemServiceImpl implements ItemService {
         //获取库存 - 新增语句步骤 ItemStockDOMapper.xml -> ItemStockDOMapper.java
         ItemStockDO itemStockDO = itemStockDOMapper.selectByItemId(itemDO.getId());
         //将 DO 转换为 model 返回前端
-        return this.convertItemModelFromDataObject(itemDO, itemStockDO);
+        ItemModel itemModel = this.convertItemModelFromDataObject(itemDO, itemStockDO);
+
+        //获取商品活动信息封装在 聚合模型 promoModel 里
+        PromoModel promoModel = promoService.getPromoByItemId(itemModel.getId());
+        if(promoModel != null && promoModel.getStatus() != 3){
+            itemModel.setPromoModel(promoModel);
+        }
+
+        return itemModel;
     }
 
     @Override

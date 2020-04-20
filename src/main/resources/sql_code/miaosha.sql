@@ -94,6 +94,19 @@ CREATE TABLE `sequence_info` (
 insert  into `sequence_info`(`name`,`current_value`,`step`) values
 ('order_info',4,1);
 
+/*Table structure for table `promo` */
+
+DROP TABLE IF EXISTS `promo`;
+
+CREATE TABLE `promo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `promo_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `start_date` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
+  `end_date` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
+  `item_id` int(11) NOT NULL DEFAULT '0',
+  `promo_item_price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 

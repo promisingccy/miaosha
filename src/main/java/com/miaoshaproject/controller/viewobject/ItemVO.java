@@ -1,5 +1,7 @@
 package com.miaoshaproject.controller.viewobject;
 
+import org.joda.time.DateTime;
+
 import java.math.BigDecimal;
 
 /**
@@ -22,6 +24,44 @@ public class ItemVO {
     //销量是通过其他方式获取 非入参
     private Integer sales;
     private String imgUrl;
+
+    //活动模块-扩展字段
+    private Integer promoStatus;//活动状态 0无 1待开始 2进行中 3已结束
+    private BigDecimal promoPrice;//活动价格
+    private Integer promoId;//活动关联id
+    private String startDate;//前端倒计时使用
+
+    public Integer getPromoStatus() {
+        return promoStatus;
+    }
+
+    public void setPromoStatus(Integer promoStatus) {
+        this.promoStatus = promoStatus;
+    }
+
+    public BigDecimal getPromoPrice() {
+        return promoPrice;
+    }
+
+    public void setPromoPrice(BigDecimal promoPrice) {
+        this.promoPrice = promoPrice;
+    }
+
+    public Integer getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
 
     public String getDescription() {
         return description;
