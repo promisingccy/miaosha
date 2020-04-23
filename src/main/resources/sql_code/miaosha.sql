@@ -74,6 +74,7 @@ CREATE TABLE `order_info` (
   `item_price` decimal(10,2) NOT NULL DEFAULT '0.00',
   `amount` int(11) NOT NULL DEFAULT '0',
   `order_price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `promo_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
