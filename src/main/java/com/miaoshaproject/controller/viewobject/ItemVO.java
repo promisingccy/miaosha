@@ -30,6 +30,16 @@ public class ItemVO {
     private BigDecimal promoPrice;//活动价格
     private Integer promoId;//活动关联id
     private String startDate;//前端倒计时使用
+    private String endDate;//前端倒计时使用
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
 
     public Integer getPromoStatus() {
         return promoStatus;

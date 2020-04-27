@@ -7,7 +7,7 @@ import com.miaoshaproject.error.EmBusinessError;
 import com.miaoshaproject.response.CommonReturnType;
 import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
-import org.apache.tomcat.util.security.MD5Encoder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,6 +52,7 @@ public class UserController extends BaseController {
         }
         //用户登录 校验登录合法性
         UserModel userModel = userService.validateLogin(telphone, this.EncodeByMd5(password));
+//        System.out.println(ReflectionToStringBuilder.toString(userModel));
         //存储session
         httpServletRequest.getSession().setAttribute("IS_LOGIN", true);
         httpServletRequest.getSession().setAttribute("LOGIN_USER", userModel);

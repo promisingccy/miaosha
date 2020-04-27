@@ -92,10 +92,11 @@ public class ItemController extends BaseController {
             itemVO.setPromoId(itemModel.getPromoModel().getId());
             itemVO.setPromoPrice(itemModel.getPromoModel().getPromoItemPrice());
             itemVO.setStartDate(itemModel.getPromoModel().getStartDate().toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+            itemVO.setEndDate(itemModel.getPromoModel().getEndDate().toString(DateTimeFormat.forPattern("yyyy-MM-dd " +
+                    "HH:mm:ss")));
         }else{
             itemVO.setPromoStatus(0);//活动状态 0无 1待开始 2进行中 3已结束
         }
-
         return itemVO;
     }
 }

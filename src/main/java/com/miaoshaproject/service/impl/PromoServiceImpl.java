@@ -35,9 +35,10 @@ public class PromoServiceImpl implements PromoService {
         }
         if(promoModel.getStartDate().isAfterNow()){
             promoModel.setStatus(1);//未开始
-        }
-        if(promoModel.getEndDate().isBeforeNow()){
+        }else if(promoModel.getEndDate().isBeforeNow()){
             promoModel.setStatus(3);//已结束
+        }else {
+            promoModel.setStatus(2);//进行中
         }
         return promoModel;
     }
