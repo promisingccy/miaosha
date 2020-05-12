@@ -1,5 +1,8 @@
 package com.miaoshaproject.service.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -12,6 +15,7 @@ import javax.validation.constraints.NotNull;
  * @Date 2019/12/18 17:08
  * @Version 1.0
  **/
+
 public class UserModel {
     private Integer id;
     //不能为空不能为null 用于验证字符串
@@ -31,6 +35,7 @@ public class UserModel {
     @NotBlank(message = "密码号不能为空")
     private String encrptPassword;
     private Integer userId;
+    private String otpCode;
 
     public Integer getId() {
         return id;
@@ -102,5 +107,13 @@ public class UserModel {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getOtpCode() {
+        return otpCode;
+    }
+
+    public void setOtpCode(String otpCode) {
+        this.otpCode = otpCode;
     }
 }

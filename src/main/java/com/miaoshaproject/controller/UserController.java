@@ -7,9 +7,13 @@ import com.miaoshaproject.error.EmBusinessError;
 import com.miaoshaproject.response.CommonReturnType;
 import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 
@@ -40,6 +44,9 @@ public class UserController extends BaseController {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
+    //日志操作对象
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     //用户登录接口
     @RequestMapping(value = "/login", method = {RequestMethod.POST}, consumes = {HTTP_CONTENT_TYPE})
     @ResponseBody
@@ -59,30 +66,23 @@ public class UserController extends BaseController {
     }
 
     //用户注册接口
-    @RequestMapping(value = "/register", method = {RequestMethod.POST}, consumes = {HTTP_CONTENT_TYPE})
+    @PostMapping(value = "/register", consumes = {HTTP_CONTENT_TYPE})
     @ResponseBody
-    public CommonReturnType register(
-            @RequestParam(name="name")String name,
-            @RequestParam(name="password")String password,
-            @RequestParam(name="gender")Byte gender,
-            @RequestParam(name="age")Integer age,
-            @RequestParam(name="telphone")String telphone,
-            @RequestParam(name="otpCode")String otpCode
-    ) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public CommonReturnType register(UserModel userModel) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        logger.debug(ReflectionToStringBuilder.toString(userModel));
         //验证手机号对应的optCode
-        String inSessionOtpCode = (String) httpServletRequest.getSession().getAttribute(telphone);
-        if(!StringUtils.equals(inSessionOtpCode, otpCode)){
+        String inSessionOtpCode = (String) httpServletRequest.getSession().getAttribute(userModel.getTelphone());
+        if(!StringUtils.equals(inSessionOtpCode, userModel.getOtpCode())){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "短信验证码不正确");
         }
         //用户注册
-        UserModel userModel = new UserModel();
-        userModel.setName(name);
-        userModel.setGender(gender);
-        userModel.setAge(age);
-        userModel.setTelphone(telphone);
+        userModel.setName(userModel.getName());
+        userModel.setGender(userModel.getGender());
+        userModel.setAge(userModel.getAge());
+        userModel.setTelphone(userModel.getTelphone());
         userModel.setRegisterMode("byphone");
         //密码md5加密
-        userModel.setEncrptPassword(this.EncodeByMd5(password));
+        userModel.setEncrptPassword(this.EncodeByMd5(userModel.getEncrptPassword()));
         //执行注册
         userService.register(userModel);
         return CommonReturnType.create(null);
