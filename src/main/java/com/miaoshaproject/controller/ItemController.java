@@ -6,8 +6,6 @@ import com.miaoshaproject.response.CommonReturnType;
 import com.miaoshaproject.service.ItemService;
 import com.miaoshaproject.service.model.ItemModel;
 import org.joda.time.format.DateTimeFormat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +27,6 @@ import java.util.stream.Collectors;
 //解决跨域问题
 @CrossOrigin(origins = {"*"}, allowCredentials = "true")
 public class ItemController extends BaseController {
-
-    //日志操作对象
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ItemService itemService;

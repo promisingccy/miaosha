@@ -7,16 +7,11 @@ import com.miaoshaproject.error.EmBusinessError;
 import com.miaoshaproject.response.CommonReturnType;
 import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -44,9 +39,6 @@ public class UserController extends BaseController {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
-    //日志操作对象
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
     //用户登录接口
     @RequestMapping(value = "/login", method = {RequestMethod.POST}, consumes = {HTTP_CONTENT_TYPE})
     @ResponseBody
@@ -58,7 +50,6 @@ public class UserController extends BaseController {
         }
         //用户登录 校验登录合法性
         UserModel userModel = userService.validateLogin(telphone, this.EncodeByMd5(password));
-//        System.out.println(ReflectionToStringBuilder.toString(userModel));
         //存储session
         httpServletRequest.getSession().setAttribute("IS_LOGIN", true);
         httpServletRequest.getSession().setAttribute("LOGIN_USER", userModel);
@@ -69,7 +60,6 @@ public class UserController extends BaseController {
     @PostMapping(value = "/register", consumes = {HTTP_CONTENT_TYPE})
     @ResponseBody
     public CommonReturnType register(UserModel userModel) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
-        logger.debug(ReflectionToStringBuilder.toString(userModel));
         //验证手机号对应的optCode
         String inSessionOtpCode = (String) httpServletRequest.getSession().getAttribute(userModel.getTelphone());
         if(!StringUtils.equals(inSessionOtpCode, userModel.getOtpCode())){

@@ -1,11 +1,10 @@
 package com.miaoshaproject.aspect;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,17 +20,18 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Aspect
 @Component
+@Slf4j
 public class HttpAspect {
 
     //日志操作对象
-    private Logger logger = LoggerFactory.getLogger(HttpAspect.class);
+//    private Logger logger = LoggerFactory.getLogger(HttpAspect.class);
 
     /** 以 controller 包下定义的所有请求为切入点 */
     @Pointcut("execution(public * com.miaoshaproject.controller..*.*(..))")
     public void webLog() {}
 
     /**
-     * 在切点之前织入
+     * 在切点之前织入 打印请求的相关参数
      * @param joinPoint
      * @throws Throwable
      */
@@ -42,32 +42,32 @@ public class HttpAspect {
         HttpServletRequest request = attributes.getRequest();
 
         // 打印请求相关参数
-        logger.info("========================================== Start ==========================================");
+        log.info("========================================== Start ==========================================");
         // 打印请求 url
-        logger.info("URL            : {}", request.getRequestURL().toString());
+        log.info("URL            : {}", request.getRequestURL().toString());
         // 打印 Http method
-        logger.info("HTTP Method    : {}", request.getMethod());
+        log.info("HTTP Method    : {}", request.getMethod());
         // 打印调用 controller 的全路径以及执行方法
-        logger.info("Class Method   : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.info("Class Method   : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
         // 打印请求的 IP
-        logger.info("IP             : {}", request.getRemoteAddr());
+        log.info("IP             : {}", request.getRemoteAddr());
         // 打印请求入参
-        logger.info("Request Args   : {}", JSONObject.toJSONString(joinPoint.getArgs()));
+        log.info("Request Args   : {}", JSONObject.toJSONString(joinPoint.getArgs()));
     }
 
     /**
-     * 在切点之后织入
+     * 在切点之后织入 通过 @After 做了请求的收尾工作
      * @throws Throwable
      */
     @After("webLog()")
     public void doAfter() throws Throwable {
-        logger.info("=========================================== End ===========================================");
+        log.info("=========================================== End ===========================================");
         // 每个请求之间空一行
-        logger.info("");
+        log.info("");
     }
 
     /**
-     * 环绕
+     * 环绕 通过 @Around 打印了请求接口的耗时时间
      * @param proceedingJoinPoint
      * @return
      * @throws Throwable
@@ -77,9 +77,9 @@ public class HttpAspect {
         long startTime = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
         // 打印出参
-        logger.info("Response Args  : {}", JSONObject.toJSONString(result));
+        log.info("Response Args  : {}", JSONObject.toJSONString(result));
         // 执行耗时
-        logger.info("Time-Consuming : {} ms", System.currentTimeMillis() - startTime);
+        log.info("Time-Consuming : {} ms", System.currentTimeMillis() - startTime);
         return result;
     }
 
